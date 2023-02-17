@@ -1,0 +1,88 @@
+<h1 id="tableLabel">Jobs editing</h1>
+
+<p>Select and edit or delete element in the accordion below</p>
+
+<p *ngIf="!jobs"><em>Loading...</em></p>
+
+<mat-accordion *ngIf="jobs">
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Jobs list
+      </mat-panel-title>
+      <mat-panel-description>
+        Click on the desired job to see more details
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <p>Job description and actions will appear here</p>
+  </mat-expansion-panel>
+  <mat-expansion-panel *ngFor="let job of jobs">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{job.title}}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{job.company}} is located on {{job.location}}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-grid-list cols="2" rowHeight="20:2">
+      <mat-grid-tile>{{ job.description }}</mat-grid-tile>
+      <mat-grid-tile>Looking for a: {{ job.role }}</mat-grid-tile>
+      <mat-grid-tile>We are paying {{ job.paymentPerHour }} USD per hour</mat-grid-tile>
+      <mat-grid-tile>Contact us => {{ job.contact }}</mat-grid-tile>
+      <mat-divider></mat-divider>
+      <mat-grid-tile><button mat-raised-button color="primary" (click)="toUpdate(job.jobId)">Update</button></mat-grid-tile>
+      <mat-grid-tile><button mat-raised-button color="error" (click)="deleteJob(job)">Delete</button></mat-grid-tile>
+    </mat-grid-list>
+  </mat-expansion-panel>
+</mat-accordion>
+<br><br>
+<span *ngIf="!isUpdating">Here you can add new jobs</span>
+<span *ngIf="isUpdating">Here you can update a job</span>
+<form #form="ngForm">
+  <mat-divider></mat-divider>
+  <mat-grid-list cols="3" rowHeight="50:5">
+    <mat-grid-tile>
+      <mat-form-field>
+      <mat-label>Title</mat-label>
+      <input matInput placeholder="Title" name="title" [(ngModel)]="job.title">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field>
+        <input matInput placeholder="Company" name="company" [(ngModel)]="job.company">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field>
+      <input matInput placeholder="Location" name="location" [(ngModel)]="job.location">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field>
+        <input matInput placeholder="Description" name="description" [(ngModel)]="job.description">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field>
+        <input matInput placeholder="Role" name="role" [(ngModel)]="job.role">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field>
+        <input matInput placeholder="Payment per hour" name="paymentPerHour" [(ngModel)]="job.paymentPerHour">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field>
+        <input matInput placeholder="Contact" name="contact" [(ngModel)]="job.contact">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile>
+      <button *ngIf="!isUpdating" mat-raised-button color="primary" (click)="addJob(form.value)">Create</button>
+      <button *ngIf="isUpdating" mat-raised-button color="primary" (click)="updateJob(form.value)">Update</button>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-divider></mat-divider>
+</form>
